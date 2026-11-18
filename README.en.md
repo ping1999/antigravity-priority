@@ -104,7 +104,7 @@ To install this plugin through the CPA plugin store, add the raw registry URL to
 plugins:
   enabled: true
   store-sources:
-    - "https://raw.githubusercontent.com/ygq-future/antigravity-priority/main/registry.json"
+    - "https://raw.githubusercontent.com/ping1999/antigravity-priority/main/registry.json"
 ```
 
 > **Note**: Do not use GitHub web URLs containing `/blob/`. After saving `store-sources`, restart CPA or reload plugins through the management UI, then refresh the plugin store list to install with one click.
