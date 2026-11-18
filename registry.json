@@ -6,9 +6,10 @@
       "name": "Antigravity Smart Priority",
       "description": "Intelligent dual-window quota pacing, Weekly Urgency scheduler, and Dynamic Boost Horizon optimizer for Google Antigravity credentials.",
       "author": "ygq-future",
-      "version": "1.3.7",
-      "repository": "https://github.com/ygq-future/antigravity-priority",
-      "homepage": "https://github.com/ygq-future/antigravity-priority",
+      "version": "1.3.8",
+      "repository": "https://github.com/ping1999/antigravity-priority",
+      "homepage": "https://github.com/ping1999/antigravity-priority",
+      "install": {"type": "github-release"},
       "license": "MIT",
       "tags": ["antigravity", "priority", "quota", "scheduler", "cliproxyapi"]
     }

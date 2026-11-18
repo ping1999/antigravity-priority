@@ -60,11 +60,11 @@ func TestRegistryJSON_SchemaValidation(t *testing.T) {
 			if p.Version == "" {
 				t.Error("plugin version must not be empty")
 			}
-			if p.Repository != "https://github.com/ygq-future/antigravity-priority" {
-				t.Errorf("expected repository https://github.com/ygq-future/antigravity-priority, got %q", p.Repository)
+			if p.Repository != "https://github.com/ping1999/antigravity-priority" {
+				t.Errorf("expected fork repository https://github.com/ping1999/antigravity-priority, got %q", p.Repository)
 			}
-			if p.Homepage != "https://github.com/ygq-future/antigravity-priority" {
-				t.Errorf("expected homepage https://github.com/ygq-future/antigravity-priority, got %q", p.Homepage)
+			if p.Homepage != p.Repository {
+				t.Errorf("expected homepage to match repository %q, got %q", p.Repository, p.Homepage)
 			}
 			if p.License != "MIT" {
 				t.Errorf("expected MIT license, got %q", p.License)

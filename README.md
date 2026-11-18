@@ -104,7 +104,7 @@ go build -buildmode=c-shared -trimpath -ldflags="-s -w" -o antigravity-priority.
 plugins:
   enabled: true
   store-sources:
-    - "https://raw.githubusercontent.com/ygq-future/antigravity-priority/main/registry.json"
+    - "https://raw.githubusercontent.com/ping1999/antigravity-priority/main/registry.json"
 ```
 
 > **注意**：不要使用包含 `/blob/` 的 GitHub 网页地址。修改 `store-sources` 后，重启 CPA 或通过管理端重新加载配置，再刷新插件商店列表即可一键安装。
