@@ -128,11 +128,11 @@ const configMarkup = `
                     </div>
                 </div>
 
-                <!-- Card 3: 5-Hour Window Warm-Up -->
+                <!-- Card 3: Quota Warm-Up -->
                 <div class="config-card">
                     <h3 class="config-card-title">
                         <span>🔥</span>
-                        <span data-i18n="cfgCardWarmupTitle">5小时短窗预热</span>
+                        <span data-i18n="cfgCardWarmupTitle">额度预热</span>
                     </h3>
 
                     <div class="config-form-grid">
@@ -204,6 +204,20 @@ const configMarkup = `
                             </div>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-label-box">
+                                <span class="form-title" data-i18n="cfgWarmupArgon">Pro Argon 7 天周额度预热</span>
+                                <span class="form-hint" data-i18n="cfgWarmupArgonHint">确认独立周额度满额后发送一次请求，计入 Argon 周额度</span>
+                            </div>
+                            <div class="form-input-group">
+                                <label class="toggle-label">
+                                    <span class="toggle-switch">
+                                        <input type="checkbox" id="cfgWarmupArgonEnabled" aria-label="Pro Argon 7d">
+                                        <span class="toggle-slider"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

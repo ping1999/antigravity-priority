@@ -102,6 +102,7 @@ func (r *Runtime) runProductionTask(ctx context.Context, request TaskRequest) er
 	}
 	if !request.Warmup.Suppress && (request.Config.Warmup.GeminiEnabled ||
 		request.Config.Warmup.ClaudeEnabled ||
+		(request.Config.Warmup.ArgonEnabled && request.Warmup.Group == config.AntigravityModelGroupArgon) ||
 		request.Config.Warmup.HasEnabledOverride()) {
 		disabledAuth := make(map[string]struct{})
 		for _, c := range allCredentials {

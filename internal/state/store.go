@@ -723,7 +723,7 @@ func (s *Store) TrimRequestHistory(limit int) bool {
 	return true
 }
 
-// GetLastWarmupAt returns the last successful 5h warm-up time for a credential
+// GetLastWarmupAt returns the last successful warm-up time for a credential
 // pool. The zero time means the credential has never been warmed up.
 func (s *Store) GetLastWarmupAt(authIndex, modelGroup string) time.Time {
 	s.mu.RLock()
@@ -731,7 +731,7 @@ func (s *Store) GetLastWarmupAt(authIndex, modelGroup string) time.Time {
 	return s.warmupCompleted[entryKey(authIndex, modelGroup)]
 }
 
-// SetWarmupCompleted records a successful 5h warm-up for a credential pool.
+// SetWarmupCompleted records a successful warm-up for a credential pool.
 // Warm-up state is persisted separately from quota evidence so a probe write
 // never clears the debounce window and a restart never forgets it.
 func (s *Store) SetWarmupCompleted(authIndex, modelGroup string, at time.Time) {
@@ -747,7 +747,7 @@ func (s *Store) SetWarmupCompleted(authIndex, modelGroup string, at time.Time) {
 	s.warmupCompleted[key] = at.UTC()
 }
 
-// ClearWarmupCompleted drops every persisted debounce entry of one credential
+// ClearWarmupCompleted drops the short-window debounce entries of one credential
 // and reports how many pools were cleared.
 func (s *Store) ClearWarmupCompleted(authIndex string) int {
 	authKey := authIndexKey(authIndex)
@@ -755,11 +755,12 @@ func (s *Store) ClearWarmupCompleted(authIndex string) int {
 		return 0
 	}
 	prefix := authKey + "|model_group="
+	argonKey := entryKey(authIndex, string(config.AntigravityModelGroupArgon))
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	cleared := 0
 	for key := range s.warmupCompleted {
-		if key == authKey || strings.HasPrefix(key, prefix) {
+		if key != argonKey && (key == authKey || strings.HasPrefix(key, prefix)) {
 			delete(s.warmupCompleted, key)
 			cleared++
 		}

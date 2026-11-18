@@ -104,13 +104,14 @@ type Config struct {
 	PromptGuard              PromptGuardConfig
 }
 
-// WarmupConfig encapsulates 5-hour short-window reset countdown warm-up settings.
+// WarmupConfig holds short-window and Pro Argon weekly warm-up settings.
 type WarmupConfig struct {
 	GeminiEnabled bool   `json:"gemini_enabled"`
 	ClaudeEnabled bool   `json:"claude_enabled"`
+	ArgonEnabled  bool   `json:"argon_enabled"`
 	GeminiModel   string `json:"gemini_model"`
 	ClaudeModel   string `json:"claude_model"`
-	// Overrides holds card-level warm-up states keyed by auth_index. Presence
+	// Overrides holds short-window card states keyed by auth_index. Presence
 	// means a local override of the global pool toggle; absence means the card
 	// follows the global switch. A local value equal to the global is cleared by
 	// the setter so the card rejoins the global state.
@@ -220,22 +221,21 @@ func (w *WarmupConfig) ClearWarmupOverride(authIndex string) {
 	}
 }
 
-
 // DynamicConfig contains all runtime-customizable configuration parameters
 // that can be modified via the UI Config Center without restarting the plugin (REQ-09).
 type DynamicConfig struct {
-	AutoApply                bool                `json:"auto_apply"`
-	Interval                 string              `json:"interval"` // e.g. "15m", "30m"
-	MaxConcurrency           int                 `json:"max_concurrency"`
-	UrgencyTolerance         float64             `json:"urgency_tolerance"`           // e.g. 0.05
-	RateLimitCooldownMinutes int                 `json:"rate_limit_cooldown_minutes"` // e.g. 5
-	QuotaSampleCapacity      int                 `json:"quota_sample_capacity"`       // e.g. 6 (range 2..30)
-	RequestHistoryLimit      int                 `json:"request_history_limit"`       // e.g. 100 (range 1..1000)
-	Schedule                 ScheduleConfig      `json:"schedule"`
-	CustomTiers              map[string]int      `json:"custom_tiers,omitempty"`
-	Warmup                   WarmupConfig        `json:"warmup"`
-	ExcludedModels           []string            `json:"excluded_models,omitempty"`
-	PromptGuard              PromptGuardConfig   `json:"prompt_guard"`
+	AutoApply                bool              `json:"auto_apply"`
+	Interval                 string            `json:"interval"` // e.g. "15m", "30m"
+	MaxConcurrency           int               `json:"max_concurrency"`
+	UrgencyTolerance         float64           `json:"urgency_tolerance"`           // e.g. 0.05
+	RateLimitCooldownMinutes int               `json:"rate_limit_cooldown_minutes"` // e.g. 5
+	QuotaSampleCapacity      int               `json:"quota_sample_capacity"`       // e.g. 6 (range 2..30)
+	RequestHistoryLimit      int               `json:"request_history_limit"`       // e.g. 100 (range 1..1000)
+	Schedule                 ScheduleConfig    `json:"schedule"`
+	CustomTiers              map[string]int    `json:"custom_tiers,omitempty"`
+	Warmup                   WarmupConfig      `json:"warmup"`
+	ExcludedModels           []string          `json:"excluded_models,omitempty"`
+	PromptGuard              PromptGuardConfig `json:"prompt_guard"`
 }
 
 // UnmarshalJSON seeds omitted fields from the canonical defaults before
@@ -270,7 +270,7 @@ func Default() Config {
 		Schedule: ScheduleConfig{
 			Paused: false,
 		},
-		Warmup: DefaultWarmupConfig(),
+		Warmup:      DefaultWarmupConfig(),
 		PromptGuard: DefaultPromptGuardConfig(),
 	}
 }
@@ -285,11 +285,11 @@ func (cfg Config) Dynamic() DynamicConfig {
 		RateLimitCooldownMinutes: cfg.RateLimitCooldownMinutes,
 		QuotaSampleCapacity:      cfg.QuotaSampleCapacity,
 		RequestHistoryLimit:      cfg.RequestHistoryLimit,
-		Schedule:       cfg.Schedule,
-		CustomTiers:    cloneCustomTiers(cfg.CustomTiers),
-		Warmup:         cfg.Warmup.Clone(),
-		ExcludedModels: NormalizeExcludedModels(cfg.ExcludedModels),
-		PromptGuard:    cfg.PromptGuard.Clone(),
+		Schedule:                 cfg.Schedule,
+		CustomTiers:              cloneCustomTiers(cfg.CustomTiers),
+		Warmup:                   cfg.Warmup.Clone(),
+		ExcludedModels:           NormalizeExcludedModels(cfg.ExcludedModels),
+		PromptGuard:              cfg.PromptGuard.Clone(),
 	}
 }
 
